@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'country',
+    'map',
+    'tour_data',
 ]
 
 MIDDLEWARE = [
