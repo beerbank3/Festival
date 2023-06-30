@@ -4,7 +4,7 @@ import folium
 
 from tour_data.views import locationBasedList
 
-class Indexd(View):
+class Indexmain(View):
 
     def get(self, request):
 
