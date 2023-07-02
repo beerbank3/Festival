@@ -22,5 +22,6 @@ urlpatterns = [
     # index_page
     path('', views.IndexMain.as_view()),
     path('admin/', admin.site.urls),
-    path('map/', include('map.urls'))
+    path('map/', include('map.urls')),
+    path('tour_data/', include('tour_data.urls'))
 ]

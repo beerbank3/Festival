@@ -10,7 +10,6 @@ class IndexMain(View):
 
         data = searchFestivalList()
         if data["response"]["body"]["numOfRows"] > 0:
-            print(data["response"]["body"]["items"]["item"])
             for item in sorted(data["response"]["body"]["items"]["item"], key=lambda x: x['eventenddate']):
                 data_list['item'].append(item)
 
