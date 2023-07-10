@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views import View
 import folium
 
-from tour_data.views import locationBasedList
+from tour_data.views import locationBasedList, searchFestivalList
 
 class IndexMain(View):
     def get(self, request):
@@ -12,20 +12,16 @@ class IndexMain(View):
         m = folium.Map(location=[latitude, longitude], zoom_start=12)
 
         # folium에 마커 추가
-        cities = [
-            {'name': '서울', 'location': [37.5665, 126.9780]},
-            {'name': '부산', 'location': [35.1796, 129.0750]},
-            {'name': '인천', 'location': [37.4563, 126.7052]},
-            {'name': '대구', 'location': [35.8714, 128.6014]},
-            {'name': '광주', 'location': [35.1595, 126.8526]},
-            {'name': '대전', 'location': [36.3504, 127.3845]},
-        ]
-        
-        # 대도시 마커 추가
-        for city in cities:
+        dict = {"numOfRows":100}
+        data = searchFestivalList(dict)
+        if data["response"]["body"]["numOfRows"] > 0:
+            FestivalList = data["response"]["body"]["items"]["item"]
+
+        # 행사 마커 추가
+        for Festival in FestivalList:
             folium.Marker(
-                location=city['location'],
-                popup=folium.Popup('<a href="/your-page-url">' + city['name'] + '</a>', max_width=100)
+                location=[Festival['mapy'],Festival['mapx']],
+                popup=folium.Popup('<a href="/your-page-url">' + Festival['title'] + '</a>', max_width=100)
             ).add_to(m)
 
 

@@ -7,8 +7,8 @@ from tour_data.views import searchFestivalList
 class IndexMain(View):
     def get(self, request):
         data_list = {"item": []}
-
-        data = searchFestivalList()
+        dict = {"numOfRows":9}
+        data = searchFestivalList(dict)
         if data["response"]["body"]["numOfRows"] > 0:
             for item in sorted(data["response"]["body"]["items"]["item"], key=lambda x: x['eventenddate']):
                 data_list['item'].append(item)
