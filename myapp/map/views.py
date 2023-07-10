@@ -20,14 +20,14 @@ class IndexMain(View):
             {'name': '광주', 'location': [35.1595, 126.8526]},
             {'name': '대전', 'location': [36.3504, 127.3845]},
         ]
-
-
+        
         # 대도시 마커 추가
         for city in cities:
             folium.Marker(
                 location=city['location'],
-                popup=city['name']
+                popup=folium.Popup('<a href="/your-page-url">' + city['name'] + '</a>', max_width=100)
             ).add_to(m)
+
 
         # folium 지도를 HTML로 변환하여 템플릿에 전달
         map_html = m.get_root().render()
