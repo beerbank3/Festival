@@ -2,3 +2,6 @@
     height: 300px;
     object-fit: cover;
 }
+.main-bg{
+    background-image: url('../images/main-bg.jpg');
+}
