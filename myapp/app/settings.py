@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'country',
     'map',
     'tour_data',
+    'festival',
 ]
 
 MIDDLEWARE = [

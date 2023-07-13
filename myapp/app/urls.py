@@ -20,8 +20,9 @@ from . import views
 
 urlpatterns = [
     # index_page
-    path('', views.IndexMain.as_view()),
     path('admin/', admin.site.urls),
     path('map/', include('map.urls')),
-    path('tour_data/', include('tour_data.urls'))
+    path('tour_data/', include('tour_data.urls')),
+    path('festival/', include('festival.urls')),
+    path('', views.IndexMain.as_view())
 ]
