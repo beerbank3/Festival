@@ -11,6 +11,5 @@ class DetailView(View):
         if data["response"]["body"]["numOfRows"] > 0:
             detail = data["response"]["body"]["items"]["item"]
 
-        print(detail)
-        context = {'data': detail}
+        context = {'data': detail[0]}
         return render(request, 'detailview.html', context)
