@@ -11,7 +11,6 @@ class DetailView(View):
         if data["response"]["body"]["numOfRows"] > 0:
             detail = data["response"]["body"]["items"]["item"]
 
-        print(detail[0])
         context = {
             'data': detail[0],
             'mapx': detail[0]['mapx'],
