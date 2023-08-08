@@ -15,5 +15,9 @@
 {% block scripts %}
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=473f69126a1c7d40cd96c5d03d3c43dc"></script>
 <!-- main -->
+<script>
+    const mapx = '{{data.mapx}}'
+    const mapy = '{{data.mapy}}'
+</script>
 <script src="{% static 'js/detail_map.js' %}"></script>
 {% endblock %}
