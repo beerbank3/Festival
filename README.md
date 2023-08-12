@@ -11,3 +11,19 @@
 
 
 # ERD
+
+
+# 이유
+
+1. 
+
+
+# 에러 발생
+- 서버 시작시 **database is locked** 발생
+
+- 서버시작시 searchFestivalList()를 백그라운드에서 진행하면서 트랙잭션 관리가 안된거같음
+
+```
+with transaction.atomic():
+```
+- 코드를 searchFestivalList()와 parse_and_save_data(data):함수에 추가
