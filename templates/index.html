@@ -21,7 +21,7 @@
 <section class="py-5">
     <div class="container px-4 px-lg-5 mt-5">
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-3 justify-content-center loader">
-            {% for item in data.item %}
+            {% for item in data %}
             <div class="col mb-5">
                 <div class="card h-100">
                     <!-- Product image-->
@@ -33,9 +33,9 @@
                             <h5 class="fw-bolder">{{ item.title }}</h5>
                             <!-- 날짜-->
                             <div class="date">
-                                {{ item.eventstartdate|slice:"0:4" }}.{{ item.eventstartdate|slice:"4:6" }}.{{ item.eventstartdate|slice:"6:8" }}
+                                {{ item.eventstartdate }}
                                 ~
-                                {{ item.eventenddate|slice:"0:4" }}.{{ item.eventenddate|slice:"4:6" }}.{{ item.eventenddate|slice:"6:8" }}
+                                {{ item.eventenddate }}
                             </div>
                         </div>
                     </div>
