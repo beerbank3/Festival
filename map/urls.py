@@ -4,4 +4,5 @@ from . import views
 app_name = 'map'
 
 urlpatterns = [
+    path('', views.IndexMain.as_view())
 ]

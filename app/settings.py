@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'apscheduler',
-    'country',
     'map',
     'tour_data',
     'festival',
