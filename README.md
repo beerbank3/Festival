@@ -13,6 +13,12 @@
 # ERD
 
 
+# 페이지 사진
+- 메인
+![Alt text](/README/main.png)
+- 지도
+![Alt text](/README/map.png)
+
 # 동작방식 변경
 
 1. API 데이터 조회방식변경
