@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 from django.utils import timezone
 from datetime import datetime as dt
 from django.db import transaction
+from django.core.exceptions import ObjectDoesNotExist
+
 from .models import Event
 import os
 import requests
@@ -18,41 +20,49 @@ logger = logging.getLogger(__name__)
 serviceKey = os.getenv('serviceKey')
 
 def parse_and_save_data(data):
-    with transaction.atomic():
-        for item in data['item']:
-            try:
-                contentid = item['contentid']
+    for item in data['item']:
+        try:
+            contentid = item['contentid']
 
-                defaults  = {
-                    'addr1' : item['addr1'],
-                    'addr2' : item['addr2'],
-                    'booktour' : item['booktour'],
-                    'cat1' : item['cat1'],
-                    'cat2' : item['cat2'],
-                    'cat3' : item['cat3'],
-                    'contentid' : item['contentid'],
-                    'contenttypeid' : item['contenttypeid'],
-                    'createdtime' : timezone.make_aware(dt.strptime(item['createdtime'], '%Y%m%d%H%M%S')),
-                    'eventstartdate' : dt.strptime(item['eventstartdate'], '%Y%m%d').date(),
-                    'eventenddate' : dt.strptime(item['eventenddate'], '%Y%m%d').date(),
-                    'firstimage' : item['firstimage'],
-                    'firstimage2' : item['firstimage2'],
-                    'cpyrhtDivCd' : item['cpyrhtDivCd'],
-                    'mapx' : item['mapx'],
-                    'mapy' : item['mapy'],
-                    'mlevel' : item['mlevel'],
-                    'modifiedtime' : timezone.make_aware(dt.strptime(item['modifiedtime'], '%Y%m%d%H%M%S')),
-                    'areacode' : item['areacode'],
-                    'sigungucode' : item['sigungucode'],
-                    'tel' : item['tel'],
-                    'title' : item['title']
-                }
-                event, created = Event.objects.update_or_create(
-                    contentid=contentid,
-                    defaults=defaults
-                )
-            except Exception as e:
-                logger.error(f"Failed to save event(parse_and_save_data): {e}")
+            defaults  = {
+                'addr1' : item['addr1'],
+                'addr2' : item['addr2'],
+                'booktour' : item['booktour'],
+                'cat1' : item['cat1'],
+                'cat2' : item['cat2'],
+                'cat3' : item['cat3'],
+                'contentid' : item['contentid'],
+                'contenttypeid' : item['contenttypeid'],
+                'createdtime' : timezone.make_aware(dt.strptime(item['createdtime'], '%Y%m%d%H%M%S')),
+                'eventstartdate' : dt.strptime(item['eventstartdate'], '%Y%m%d').date(),
+                'eventenddate' : dt.strptime(item['eventenddate'], '%Y%m%d').date(),
+                'firstimage' : item['firstimage'],
+                'firstimage2' : item['firstimage2'],
+                'cpyrhtDivCd' : item['cpyrhtDivCd'],
+                'mapx' : item['mapx'],
+                'mapy' : item['mapy'],
+                'mlevel' : item['mlevel'],
+                'modifiedtime' : timezone.make_aware(dt.strptime(item['modifiedtime'], '%Y%m%d%H%M%S')),
+                'areacode' : item['areacode'],
+                'sigungucode' : item['sigungucode'],
+                'tel' : item['tel'],
+                'title' : item['title']
+            }
+
+            try:
+                event = Event.objects.get(contentid=contentid)
+                for field, value in defaults.items():
+                    setattr(event, field, value)  # 필드 업데이트
+                with transaction.atomic():
+                    event.save()
+
+            except ObjectDoesNotExist:
+                event = Event(contentid=contentid, **defaults)
+                with transaction.atomic():
+                    event.save()
+
+        except Exception as e:
+            logger.error(f"Failed to save event(parse_and_save_data): {e}")
 
 
 def locationBasedList(location):
@@ -81,8 +91,7 @@ def searchFestivalList():
     if data["response"]["body"]["numOfRows"] > 0:
         for item in sorted(data["response"]["body"]["items"]["item"], key=lambda x: x['eventenddate']):
             data_list['item'].append(item)
-    with transaction.atomic():
-        parse_and_save_data(data_list)
+    parse_and_save_data(data_list)
 
 def loaderFestivalList(request):
     pageNo = 1
