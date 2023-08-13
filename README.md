@@ -23,11 +23,30 @@
 
 
 # 에러 발생
-- 서버 시작시 **database is locked** 발생
+1. 서버 실행시 **database is locked** 자주 발생  
 
-- 서버시작시 searchFestivalList()를 백그라운드에서 진행하면서 트랙잭션 관리가 안된거같음
+- 해당코드는 축제 정보를 10분에 100개씩 정보가있으면 update없으면 create
+```
+event, created = Event.objects.update_or_create(
+    contentid=contentid,
+    defaults=defaults
+)
+```
+- 이 코드에서 에러가 발생하는것으로 예상
 
 ```
-with transaction.atomic():
+try:
+    event = Event.objects.get(contentid=contentid)
+    for field, value in defaults.items():
+        setattr(event, field, value)  # 필드 업데이트
+    with transaction.atomic():
+        event.save()
+
+except ObjectDoesNotExist:
+    event = Event(contentid=contentid, **defaults)
+    with transaction.atomic():
+        event.save()
 ```
-- 코드를 searchFestivalList()와 parse_and_save_data(data):함수에 추가
+- update_or_create()을 안쓰는것으로 동작방식 변경
+
+- 현재는 에러 발생 X(에러 재발생시 100개 -> 50개씩으로  분할 예정)
