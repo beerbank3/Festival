@@ -46,12 +46,12 @@
        +--------------------------+
 
 # 페이지 사진
-- 메인
+- **메인**  
 ![Alt text](/README/main.png)
-- 지도
+- **지도**  
 ![Alt text](/README/map.png)
 ![Alt text](/README/map_1.png)
-- 상세페이지
+- **상세페이지**  
 ![Alt text](/README/detail.png)
 
 # 동작방식 변경
